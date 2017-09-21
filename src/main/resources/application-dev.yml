@@ -1,0 +1,6 @@
+server:
+  port: 8888
+
+girl:
+  cupSize: B
+  age: 27

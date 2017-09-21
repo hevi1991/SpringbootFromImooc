@@ -1,0 +1,6 @@
+server:
+  port: 8881
+
+girl:
+  cupSize: F
+  age: 22
