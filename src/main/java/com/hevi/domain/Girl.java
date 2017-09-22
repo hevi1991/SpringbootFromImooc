@@ -19,7 +19,15 @@ public class Girl {
 
     private String cupSize;
 
-    @Min(value = 18,message = "未成年不可进入")
+    @Override
+    public String toString() {
+        return "Girl{" +
+                "id=" + id +
+                ", cupSize='" + cupSize + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
     private Integer age;
 
     //一定要有空白的构造器

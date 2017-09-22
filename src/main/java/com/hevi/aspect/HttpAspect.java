@@ -1,6 +1,7 @@
 package com.hevi.aspect;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -44,5 +45,10 @@ public class HttpAspect {
         logger.info("class_method={}",joinPoint.getSignature().getDeclaringTypeName()+"."+joinPoint.getSignature().getName());
         //参数
         logger.info("args={}",joinPoint.getArgs());
+    }
+
+    @AfterReturning(returning = "object",pointcut = "getPointcut()")
+    public void afterReturning(Object object){
+        logger.info(object!=null?object.toString():"");
     }
 }

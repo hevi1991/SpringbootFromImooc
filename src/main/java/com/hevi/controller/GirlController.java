@@ -1,6 +1,9 @@
 package com.hevi.controller;
 
 import com.hevi.domain.Girl;
+import com.hevi.domain.Result;
+import com.hevi.enums.ResultEnum;
+import com.hevi.exception.GirlException;
 import com.hevi.repository.GirlRepository;
 import com.hevi.service.GirlService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +32,14 @@ public class GirlController {
     }
 
     @PostMapping("/girls")
-    public String addGirl(@Valid Girl girl, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-            return bindingResult.getFieldError().getDefaultMessage();
+    public Result<Girl> addGirl(@Valid Girl girl, BindingResult bindingResult) throws Exception{
+
+        if (girl.getAge() < 18) {
+            throw new GirlException(ResultEnum.NOT_ENOUGH_AGE.getCode(),ResultEnum.NOT_ENOUGH_AGE.getMsg());
         }
 
         Girl save = girlRepository.save(girl);
-        return "Save Successed";
+        return new Result<Girl>(0,"成功",save);
     }
 
     @GetMapping(value="/girls/{id}")
@@ -44,9 +48,15 @@ public class GirlController {
     }
 
     @PutMapping(value="/girls/{id}")
-    public String updateGirl(@PathVariable("id")Integer id,
+    public Result updateGirl(@PathVariable("id")Integer id,
                            @RequestParam("age")Integer age,
-                           @RequestParam("cupSize")String cupSize){
+                           @RequestParam("cupSize")String cupSize) throws GirlException{
+
+
+        if (age < 18) {
+            throw new GirlException(ResultEnum.NOT_ENOUGH_AGE.getCode(),ResultEnum.NOT_ENOUGH_AGE.getMsg());
+        }
+
         Girl girl = new Girl();
         girl.setId(id);
         girl.setAge(age);
@@ -54,20 +64,17 @@ public class GirlController {
 
         Girl save = girlRepository.save(girl);
         if (save != null){
-            return "Update Successed";
+            return new Result(ResultEnum.SUCCESS.getCode(),ResultEnum.SUCCESS.getMsg());
         }
-        return "Update Failed";
+
+        throw new GirlException(ResultEnum.ACTION_FAILD.getCode(),ResultEnum.ACTION_FAILD.getMsg());
     }
 
     @DeleteMapping("/girls/{id}")
-    public String removeGirlById(@PathVariable("id")Integer id){
-        try {
-            girlRepository.delete(id);
-        } catch (Exception err){
-            System.out.println("err:"+err.getMessage());
-            return "Delete Failed";
-        }
-        return "Delete Successed";
+    public Result removeGirlById(@PathVariable("id")Integer id){
+
+        girlRepository.delete(id);
+        return new Result(0,"删除成功");
     }
 
     //特殊查找
