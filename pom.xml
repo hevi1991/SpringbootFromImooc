@@ -46,6 +46,12 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
+		<!--添加aop功能-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
