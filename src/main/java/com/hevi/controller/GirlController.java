@@ -4,8 +4,10 @@ import com.hevi.domain.Girl;
 import com.hevi.repository.GirlRepository;
 import com.hevi.service.GirlService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -27,17 +29,13 @@ public class GirlController {
     }
 
     @PostMapping("/girls")
-    public String addGirl(@RequestParam("age")Integer age, @RequestParam("cupSize")String cupSize){
-
-        Girl girl = new Girl();
-        girl.setAge(age);
-        girl.setCupSize(cupSize);
+    public String addGirl(@Valid Girl girl, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return bindingResult.getFieldError().getDefaultMessage();
+        }
 
         Girl save = girlRepository.save(girl);
-        if (save != null){
-            return "Save Successed";
-        }
-        return "Save Failed";
+        return "Save Successed";
     }
 
     @GetMapping(value="/girls/{id}")
