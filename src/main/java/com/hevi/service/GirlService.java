@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by Hevi on 2017/9/21.
  */
@@ -14,6 +16,10 @@ public class GirlService {
 
     @Autowired
     private GirlRepository girlRepository;
+
+    public List<Girl> girlLists(){
+        return girlRepository.findAll();
+    }
 
     @Transactional//加注解@Transactional来达到事务控制
     public void insertTwo(){
@@ -24,9 +30,11 @@ public class GirlService {
         girlRepository.save(girlA);
 
         Girl girlB = new Girl();
-        girlB.setCupSize("DE");//故意超出字符
+        girlB.setCupSize("E");//故意超出字符
         girlB.setAge(26);
         girlRepository.save(girlB);
 
     }
+
+
 }

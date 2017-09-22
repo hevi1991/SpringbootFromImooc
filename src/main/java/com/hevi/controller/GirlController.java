@@ -27,8 +27,9 @@ public class GirlController {
     GirlService girlService;
 
     @GetMapping("/girls")
-    public List<Girl> girlLists(){
-        return girlRepository.findAll();
+    public Result<List<Girl>> girlLists(){
+        List<Girl> girls = girlService.girlLists();
+        return new Result<List<Girl>>(ResultEnum.SUCCESS.getCode(),ResultEnum.SUCCESS.getMsg(),girls);
     }
 
     @PostMapping("/girls")
